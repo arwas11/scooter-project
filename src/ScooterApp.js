@@ -2,37 +2,33 @@ const User = require("./User");
 const Scooter = require("./Scooter");
 
 class ScooterApp {
-  static = {
-    NYC: [],
-    LA: [],
-    CHI: [],
-  };
   constructor() {
-    this.stations = stations;
-    this.registeredUsers = {
-      testing1: "testing1",
+    this.stations = {
+      NYC: [],
+      LA: [],
+      CHI: [],
+      "West Loop": [],
     };
+    this.registeredUser = {};
   }
 
   registerUser(username, password, age) {
-    if (age <= 18) {
+    if (age < 18) {
       throw new Error("too young to register");
     }
-    if (Object.hasOwn(this.registeredUser, username) === false && age > 18) {
-      this.registeredUser = username;
+    if (Object.hasOwn(this.registeredUser[username]) === false && age > 18) {
+      const user = new User(username, password, age)
+      this.registeredUser[username] = user;
       console.log("user has been registered");
-      return this.registeredUsers.username; //to return user info
+      return user; //to return user info
     } else {
       throw new Error("already registered");
     }
   }
 
   loginUser(username, password) {
-    // let registeredObj;
-    let thisUser;
+    let thisUser = this.registeredUser[username];
     if (Object.hasOwn(this.registeredUser, username)) {
-      // registeredObj = this.registeredUsers;
-      thisUser = this.registeredUsers.username;
       thisUser.login(password);
       console.log("user has been logged in");
     } else {
@@ -41,10 +37,8 @@ class ScooterApp {
   }
 
   logoutUser(username) {
-    let thisUser;
+    let thisUser = this.registeredUser[username];
     if (Object.hasOwn(this.registeredUser, username)) {
-      // registeredObj = this.registeredUsers;
-      thisUser = this.registeredUsers.username;
       thisUser.logout();
       console.log("user is logged out");
     } else {
@@ -53,22 +47,21 @@ class ScooterApp {
   }
 
   createScooter(station) {
-    console.log(station);
-    //   if (station === "NY" || station === "CHI") {
-    const newScooter = new Scooter(station);
-    //       this.stations.station.push(newScooter)
-    newScooter.station = station;
-    console.log("created new scooter");
-    //       return newScooter
-    //   } else if (station === "LA") {
-    //       const newScooter = new Scooter(station)
-    //       this.stations.station.push(newScooter)
-    //       newScooter.station = station;
-    //       console.log('created new scooter');
-    //       return newScooter
-    //   } else {
-    //       throw new Error('no such station error'); //might not need word error
-    //   }
+      if (station === "NY" || station === "CHI") {
+        const newScooter = new Scooter(station);
+        this.stations[station].push(newScooter)
+        Scooter.station = station;
+        console.log("created new scooter");
+          return newScooter
+      } else if (station === "LA" || station === "West Loop") {
+        const newScooter = new Scooter(station);
+        this.stations[station].push(newScooter)
+        Scooter.station = station;
+        console.log("created new scooter");
+          return newScooter
+      } else {
+          throw new Error('no such station'); 
+      }
   }
 
   dockScooter(scooter, station) {

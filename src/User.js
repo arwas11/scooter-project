@@ -1,6 +1,5 @@
 // class User extends ScooterApp
 class User {
-  // #password
   constructor(username, password, age) {
     this.username = username;
     this.password = password;

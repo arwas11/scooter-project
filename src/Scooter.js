@@ -1,8 +1,9 @@
 class Scooter {
-  constructor(station = null, user = null, serial = 1, charge, isBroken) {
+  static nextSerial = 0;
+  constructor(station) {
     this.station = station;
-    this.user = user;
-    this.serial = this.nextSerial + 1;
+    this.user = null;
+    this.serial = Scooter.nextSerial++;
     // this.nextSerial = nextSerial; nextSerial
     this.charge = 100;
     this.isBroken = false;
@@ -19,7 +20,7 @@ class Scooter {
 
   dock(station) {
     this.station = station;
-    delete this.user;
+    this.user = null;
   }
 }
 
