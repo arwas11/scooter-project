@@ -70,12 +70,11 @@ class ScooterApp {
     }
 
     if (station === "NY" || station === "CHI") {
-      this.stations.station.push(scooter);
+      this.stations[station].push(scooter);
       scooter.dock(station);
-
       console.log("scooter is docked");
-    } else if (station === "LA") {
-      this.stations.station.push(scooter);
+    } else if (station === "LA" || station === "West Loop") {
+      this.stations[station].push(scooter);
       scooter.dock(station);
       console.log("scooter is docked");
     } else {
@@ -83,34 +82,34 @@ class ScooterApp {
     }
   }
 
-  rentScooter(scooter, user) {
-    let thisUser;
-    if (Object.hasOwn(this.registeredUser, user)) {
-      // registeredObj = this.registeredUsers;
-      thisUser = this.registeredUsers.user;
-    }
-    if (scooter.station === "NY" || scooter.station === "CHI") {
-      scooter.station = null;
-      if (scooter.rent(thisUser)) {
-        console.log("scooter is rented");
-      } else {
-        throw new Error("scooter already rented");
-      }
-    } else if (scooter.station === "LA") {
-      scooter.station = null;
-      if (scooter.rent(thisUser)) {
-        console.log("scooter is rented");
-      } else {
-        throw new Error("scooter already rented");
-      }
-    } else {
-      throw new Error("no such station error"); //might not need word error
-    }
-  }
+  // rentScooter(scooter, user) {
+  //   let thisUser;
+  //   if (Object.hasOwn(this.registeredUser, user)) {
+  //     // registeredObj = this.registeredUsers;
+  //     thisUser = this.registeredUsers.user;
+  //   }
+  //   if (scooter.station === "NY" || scooter.station === "CHI") {
+  //     scooter.station = null;
+  //     if (scooter.rent(thisUser)) {
+  //       console.log("scooter is rented");
+  //     } else {
+  //       throw new Error("scooter already rented");
+  //     }
+  //   } else if (scooter.station === "LA") {
+  //     scooter.station = null;
+  //     if (scooter.rent(thisUser)) {
+  //       console.log("scooter is rented");
+  //     } else {
+  //       throw new Error("scooter already rented");
+  //     }
+  //   } else {
+  //     throw new Error("no such station error"); //might not need word error
+  //   }
+  // }
 
   print() {
     console.log(`The list of registered users 
-          ${this.registerUser}`);
+          ${this.registeredUser}`);
     console.log(`The list of stations 
           ${this.stations}`);
   }
