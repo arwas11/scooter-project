@@ -16,8 +16,9 @@ class ScooterApp {
     if (age < 18) {
       throw new Error("too young to register");
     }
-    if (Object.hasOwn(this.registeredUser[username]) === false && age > 18) {
-      const user = new User(username, password, age)
+
+    if (!this.registeredUser[username] && age > 18) {
+      const user = new User(username, password, age);
       this.registeredUser[username] = user;
       console.log("user has been registered");
       return user; //to return user info
@@ -28,7 +29,7 @@ class ScooterApp {
 
   loginUser(username, password) {
     let thisUser = this.registeredUser[username];
-    if (Object.hasOwn(this.registeredUser, username)) {
+    if (thisUser) {
       thisUser.login(password);
       console.log("user has been logged in");
     } else {
@@ -38,7 +39,7 @@ class ScooterApp {
 
   logoutUser(username) {
     let thisUser = this.registeredUser[username];
-    if (Object.hasOwn(this.registeredUser, username)) {
+    if (thisUser) {
       thisUser.logout();
       console.log("user is logged out");
     } else {
@@ -47,21 +48,21 @@ class ScooterApp {
   }
 
   createScooter(station) {
-      if (station === "NY" || station === "CHI") {
-        const newScooter = new Scooter(station);
-        this.stations[station].push(newScooter)
-        Scooter.station = station;
-        console.log("created new scooter");
-          return newScooter
-      } else if (station === "LA" || station === "West Loop") {
-        const newScooter = new Scooter(station);
-        this.stations[station].push(newScooter)
-        Scooter.station = station;
-        console.log("created new scooter");
-          return newScooter
-      } else {
-          throw new Error('no such station'); 
-      }
+    if (station === "NY" || station === "CHI") {
+      const newScooter = new Scooter(station);
+      this.stations[station].push(newScooter);
+      Scooter.station = station;
+      console.log("created new scooter");
+      return newScooter;
+    } else if (station === "LA" || station === "West Loop") {
+      const newScooter = new Scooter(station);
+      this.stations[station].push(newScooter);
+      Scooter.station = station;
+      console.log("created new scooter");
+      return newScooter;
+    } else {
+      throw new Error("no such station");
+    }
   }
 
   dockScooter(scooter, station) {
@@ -82,35 +83,28 @@ class ScooterApp {
     }
   }
 
-  // rentScooter(scooter, user) {
-  //   let thisUser;
-  //   if (Object.hasOwn(this.registeredUser, user)) {
-  //     // registeredObj = this.registeredUsers;
-  //     thisUser = this.registeredUsers.user;
-  //   }
-  //   if (scooter.station === "NY" || scooter.station === "CHI") {
-  //     scooter.station = null;
-  //     if (scooter.rent(thisUser)) {
-  //       console.log("scooter is rented");
-  //     } else {
-  //       throw new Error("scooter already rented");
-  //     }
-  //   } else if (scooter.station === "LA") {
-  //     scooter.station = null;
-  //     if (scooter.rent(thisUser)) {
-  //       console.log("scooter is rented");
-  //     } else {
-  //       throw new Error("scooter already rented");
-  //     }
-  //   } else {
-  //     throw new Error("no such station error"); //might not need word error
-  //   }
-  // }
+  rentScooter(scooter, user) {
+    if (!scooter.station) {
+      throw new Error("scooter already rented");
+    } else if (!this.stations[scooter.station]) {
+      throw new Error("no such station");
+    }
+
+    for (let i = 0; i < this.stations[scooter.station].length; i++){
+      if (this.stations[scooter.station][i] === scooter){
+        this.stations[scooter.station].splice(i, "");
+        console.log(`scooter from ${scooter.station} is rented to ${user.username}`);
+        scooter.station = null;
+        scooter.user = user;
+        return
+      }
+    }
+  }
 
   print() {
-    console.log(`The list of registered users 
+    console.log(`List of registered users 
           ${this.registeredUser}`);
-    console.log(`The list of stations 
+    console.log(`List of stations 
           ${this.stations}`);
   }
 }
