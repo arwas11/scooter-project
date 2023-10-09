@@ -1,4 +1,3 @@
-// class User extends ScooterApp
 class User {
   constructor(username, password, age) {
     this.username = username;
@@ -17,7 +16,7 @@ class User {
   }
 
   logout() {
-    this.loggedIn = !this.loggedIn; //CHECK HERE IF CHANGED
+    this.loggedIn = !this.loggedIn;
   }
 }
 module.exports = User;
