@@ -66,21 +66,16 @@ class ScooterApp {
   }
 
   dockScooter(scooter, station) {
-    if (!this.stations.includes(station)) {
-      throw new Error("scooter already at station");
+    if (!this.stations[station]) {
+      throw "no such station";
+    }
+    if (this.stations[station].includes(scooter)) {
+      throw "scooter already at station";
     }
 
-    if (station === "NY" || station === "CHI") {
-      this.stations[station].push(scooter);
-      scooter.dock(station);
-      console.log("scooter is docked");
-    } else if (station === "LA" || station === "West Loop") {
-      this.stations[station].push(scooter);
-      scooter.dock(station);
-      console.log("scooter is docked");
-    } else {
-      throw new Error("no such station");
-    }
+    this.stations[station].push(scooter);
+    scooter.dock(station);
+    console.log(`scooter is docked at ${station}`);
   }
 
   rentScooter(scooter, user) {
